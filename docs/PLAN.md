@@ -3,8 +3,10 @@ PLAN: "feat: Avatar component, Catalog, State machine and CSS styling"
 TAG: v0.1.0
 EXECUTOR: jules
 REVIEWER: none
-STATUS: running
+STATUS: review
 SESSION: 16510413316570518627
+PR: https://github.com/webtyp/avatar/pull/1
+REVIEWED_COMMIT: cc6e7001a482f418149e39b8c99fbda7c8ea9b6a
 ---
 
 > Read AGENTS.md at the repo root before any change.
@@ -198,3 +200,8 @@ In `tests/avatar_test.go` (`//go:build !wasm`):
 ## Acceptance
 - `gotest` passes completely.
 - `GOOS=js GOARCH=wasm go list -deps ./... | grep webtyp/widget/style` is empty.
+
+## Executor notes
+- Added actual source code files `state.go`, `catalog.go`, `avatar.go`, `engine.go`, `css.go` instead of just a copy of the plan.
+- Completed all unit tests that now successfully pass.
+- Used single quotes for HTML attributes string verification in test due to dom library formatting.
