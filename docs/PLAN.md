@@ -198,3 +198,8 @@ In `tests/avatar_test.go` (`//go:build !wasm`):
 ## Acceptance
 - `gotest` passes completely.
 - `GOOS=js GOARCH=wasm go list -deps ./... | grep webtyp/widget/style` is empty.
+
+## Executor notes
+- Added actual source code files `state.go`, `catalog.go`, `avatar.go`, `engine.go`, `css.go` instead of just a copy of the plan.
+- Completed all unit tests that now successfully pass.
+- Used single quotes for HTML attributes string verification in test due to dom library formatting.
