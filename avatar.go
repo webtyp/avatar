@@ -73,57 +73,39 @@ func (a *Avatar) Init(ctx Ctx) {
 }
 
 func (a *Avatar) Render() *Element {
-	// e.g. <prefix>-torso-normal
 	prefix := a.catalog.Prefix
+
+	renderLayer := func(l Layer, part string, sig *SignalString) *Element {
+		use := NewElement("use").
+			BindAttrFunc("href", func() string {
+				val := sig.Get()
+				if val == "" || val == "none" {
+					return ""
+				}
+				if part == "pose" {
+					return "#" + prefix + "-pose-" + val
+				}
+				return "#" + prefix + "-" + part + "-" + val
+			})
+		g := NewElement("g").Child(use)
+		if !a.visibleLayers[l] {
+			g.Attr("style", "display:none")
+		}
+		return g
+	}
 
 	return NewElement("svg").
 		Attr("viewBox", "0 0 512 512").
 		Attr("class", "avatar").
 		Child(
-			Show(NewBool(a.visibleLayers[LayerTorso]), func() *Element {
-				return NewElement("g").Child(
-					NewElement("use").BindAttrFunc("href", func() string { return "#" + prefix + "-torso-" + a.torsoSig.Get() }),
-				)
-			}),
-			Show(NewBool(a.visibleLayers[LayerHead]), func() *Element {
-				return NewElement("g").Child(
-					NewElement("use").BindAttrFunc("href", func() string { return "#" + prefix + "-head-" + a.headSig.Get() }),
-				)
-			}),
-			Show(NewBool(a.visibleLayers[LayerHair]), func() *Element {
-				return NewElement("g").Child(
-					NewElement("use").BindAttrFunc("href", func() string { return "#" + prefix + "-hair-" + a.hairSig.Get() }),
-				)
-			}),
-			Show(NewBool(a.visibleLayers[LayerBrows]), func() *Element {
-				return NewElement("g").Child(
-					NewElement("use").BindAttrFunc("href", func() string { return "#" + prefix + "-brows-" + a.browsSig.Get() }),
-				)
-			}),
-			Show(NewBool(a.visibleLayers[LayerEyes]), func() *Element {
-				return NewElement("g").Child(
-					NewElement("use").BindAttrFunc("href", func() string { return "#" + prefix + "-eyes-" + a.eyesSig.Get() }),
-				)
-			}),
-			Show(NewBool(a.visibleLayers[LayerNose]), func() *Element {
-				return NewElement("g").Child(
-					NewElement("use").BindAttrFunc("href", func() string { return "#" + prefix + "-nose-" + a.noseSig.Get() }),
-				)
-			}),
-			Show(NewBool(a.visibleLayers[LayerMouth]), func() *Element {
-				return NewElement("g").Child(
-					NewElement("use").BindAttrFunc("href", func() string { return "#" + prefix + "-mouth-" + a.mouthSig.Get() }),
-				)
-			}),
-			Show(NewBool(a.visibleLayers[LayerPoses]), func() *Element {
-				return NewElement("g").Child(
-					NewElement("use").BindAttrFunc("href", func() string { return "#" + prefix + "-poses-" + a.poseSig.Get() }),
-				)
-			}),
-			Show(NewBool(a.visibleLayers[LayerExtras]), func() *Element {
-				return NewElement("g").Child(
-					NewElement("use").BindAttrFunc("href", func() string { return "#" + prefix + "-extras-" + a.extraSig.Get() }),
-				)
-			}),
+			renderLayer(LayerTorso, "torso", a.torsoSig),
+			renderLayer(LayerHead, "head", a.headSig),
+			renderLayer(LayerHair, "hair", a.hairSig),
+			renderLayer(LayerBrows, "brows", a.browsSig),
+			renderLayer(LayerEyes, "eyes", a.eyesSig),
+			renderLayer(LayerNose, "nose", a.noseSig),
+			renderLayer(LayerMouth, "mouth", a.mouthSig),
+			renderLayer(LayerPoses, "pose", a.poseSig),
+			renderLayer(LayerExtras, "extras", a.extraSig),
 		)
 }

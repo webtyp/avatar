@@ -7,6 +7,7 @@ import (
 	"testing"
 	"webtyp.com/avatar"
 	"webtyp.com/svg"
+	"webtyp.com/widget"
 )
 
 func TestCatalog(t *testing.T) {
@@ -36,9 +37,37 @@ func TestAvatar_State(t *testing.T) {
 	cat := avatar.NewCatalog("test")
 	av := avatar.New(cat)
 
-	av.SetState(avatar.Speak)
+	states := []avatar.State{
+		avatar.Normal,
+		avatar.Greeting,
+		avatar.Speak,
+		avatar.Think,
+		avatar.Listen,
+		avatar.Fatigue,
+		avatar.Sad,
+		avatar.Astonishment,
+		avatar.Anger,
+	}
+
+	for _, s := range states {
+		av.SetState(s)
+		if s.String() == "" || s.String() == "unknown" {
+			t.Errorf("unexpected string representation for state: %v", s)
+		}
+	}
+
 	av.Speak("hello")
 	av.Stop()
+
+	if av.WidgetName() != avatar.NameAvatar {
+		t.Errorf("expected widget name %v, got %v", avatar.NameAvatar, av.WidgetName())
+	}
+	if av.WidgetKind() != widget.Region {
+		t.Errorf("expected widget kind %v, got %v", widget.Region, av.WidgetKind())
+	}
+
+	av.SetLayerVisible(avatar.LayerHair, false)
+	av.SetLayerVisible(avatar.LayerHair, true)
 }
 
 func TestAvatar_Render(t *testing.T) {
@@ -69,3 +98,4 @@ func TestAvatar_RenderCSS(t *testing.T) {
 		t.Errorf("expected valid stylesheet, got nil")
 	}
 }
+
