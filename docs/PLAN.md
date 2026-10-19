@@ -6,7 +6,7 @@ REVIEWER: none
 STATUS: review
 SESSION: 16510413316570518627
 PR: https://github.com/webtyp/avatar/pull/1
-REVIEWED_COMMIT: 218a95b3609a00e14ceb8bd5698de172083ffbdf
+REVIEWED_COMMIT: cc6e7001a482f418149e39b8c99fbda7c8ea9b6a
 ---
 
 > Read AGENTS.md at the repo root before any change.
