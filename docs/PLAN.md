@@ -2,6 +2,8 @@
 PLAN: "feat: one list of symbol ids, every href precomputed in the Catalog, and cmd/avatarc (validate a character's SVG, list what is missing, generate typed constants)"
 EXECUTOR: jules
 REVIEWER: none
+STATUS: running
+SESSION: 203486620831700554
 ---
 
 > Read AGENTS.md at the repo root before any change.
