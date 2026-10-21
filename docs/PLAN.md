@@ -3,8 +3,10 @@ PLAN: "feat!: avatar v0.2 — independent activity and emotion, CSS-driven loops
 TAG: v0.2.0
 EXECUTOR: jules
 REVIEWER: none
-STATUS: running
+STATUS: review
 SESSION: 3958202475294254305
+PR: https://github.com/webtyp/avatar/pull/2
+REVIEWED_COMMIT: 95d1bc0c3824790a7aabd9aa758dbdd0daa1688c
 ---
 
 > Read AGENTS.md at the repo root before any change.
