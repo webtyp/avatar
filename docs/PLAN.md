@@ -3,6 +3,8 @@ PLAN: "feat!: avatar v0.2 — independent activity and emotion, CSS-driven loops
 TAG: v0.2.0
 EXECUTOR: jules
 REVIEWER: none
+STATUS: running
+SESSION: 3958202475294254305
 ---
 
 > Read AGENTS.md at the repo root before any change.
