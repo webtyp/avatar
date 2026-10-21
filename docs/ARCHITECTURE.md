@@ -30,17 +30,21 @@ froze; the engine ignores the order until its pending timer fires.
 
 ## Known defects in v0.1.0
 
-1. `SetState` and `Speak` only write a field; the engine reads it when its current timer fires
-   (`engine.go`: 500 ms poll, 3.5–5 s in `Normal`, 10–30 s in `Fatigue`).
-2. `State` `Speak` has no case in `engine.go`: its button does nothing. `Speak(text)` ignores the
-   text and never ends by itself.
-3. Blink exists only in `Normal`; while speaking the eyes cycle `talk-a`/`talk-o`, so there is
-   no blink.
-4. `Catalog.WithHair`/`WithTorso`/`WithHead` are never read: `Render` builds every href from
-   `Prefix`. A second character cannot be built today.
-5. `SetLayerVisible` is read only in `Render`: toggles do nothing live.
-6. Allocations per frame: `Render` concatenates the href string on every signal change; every
-   `time.AfterFunc` allocates a timer and a `js.FuncOf` (≈ 7 per second while speaking).
-7. `stateSig` is never bound; `go engine(...)` starts a goroutine that only schedules a timeout.
 8. Consumer: `mjosefa-cote/svg.go` discards the `AddLayers` error (`_ =`); `web/client.go`
    writes its CSS by hand; `docs/avatar/preview.html` was not deleted.
+
+## Channels
+
+Face variant names (`<prefix>-<layer>-<name>`, layers `brows`, `eyes`, `mouth`): `normal`, `greeting`, `sad`, `astonishment`, `anger`, `fatigue`, `listen`, `think`, `talk-a`, `talk-o`, `closed`.
+
+Emotion → its own variant: Neutral→`normal`, Happy→`greeting`, Sad→`sad`, Astonished→`astonishment`, Angry→`anger`.
+Activity → its own variant: Idle→`normal`, Greeting→`greeting`, Listen→`listen`, Think→`think`, Speak→`normal`, Fatigue→`fatigue`.
+
+| Layer | Rule |
+|---|---|
+| brows, eyes | emotion's variant; when emotion is `Neutral`, the activity's variant |
+| mouth (static `<use>`) | Greeting/Listen/Think/Fatigue → activity's variant; Idle → emotion's variant; Speak → static mouth hidden, the speech frames shown (below) |
+| speech frames | three `<use>`: `mouth-talk-a`, `mouth-talk-o`, and a rest frame = **emotion's** mouth (so speaking angry rests on the angry mouth) |
+| nose | `<prefix>-nose-sad` when emotion is Sad; `<prefix>-nose-closed` during yawn step 2; else empty href |
+| poses | Greeting → `pose-greeting`; Think → `pose-think`; Speak → `pose-talk-a`/`pose-talk-o` frames; else none |
+| extras | Speak → `extras-speech-a`/`extras-speech-o` frames; Think → `thought-bubble-1`, `-2`, `-3`, `-3-ring` static + `thought-dot-1..3` frames; Listen → `sound-inner`/`-mid`/`-outer` frames; Fatigue → `zzz-1..3` frames; Greeting → `extras-wave`; Idle → Sad `extras-drop`, Astonished `extras-marks`, else none |

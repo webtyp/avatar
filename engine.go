@@ -2,186 +2,184 @@ package avatar
 
 import (
 	"math/rand"
-	"webtyp.com/dom"
 	"webtyp.com/time"
 )
 
-func engine(ctx dom.Ctx, a *Avatar) {
-	// Initialize default signals
-	a.torsoSig.Set("normal")
-	a.headSig.Set("normal")
-	a.hairSig.Set("normal")
-	a.browsSig.Set("normal")
-	a.eyesSig.Set("normal")
-	a.noseSig.Set("none")
-	a.mouthSig.Set("normal")
-	a.poseSig.Set("none")
-	a.extraSig.Set("none")
+func (a *Avatar) Speak(text string) {
+	a.SetActivity(Speak)
 
-	var timer time.Timer
-	running := true
-	ctx.OnCleanup(func() {
-		running = false
-		if timer != nil {
-			timer.Stop()
-		}
-	})
-
-	var step func()
-	step = func() {
-		if !running {
-			return
-		}
-
-		if a.speaking {
-			a.mouthSig.Set("talk-a")
-			a.poseSig.Set("talk-a")
-			a.extraSig.Set("speech-a")
-			a.browsSig.Set("talk-a")
-			a.eyesSig.Set("talk-a")
-			timer = time.AfterFunc(150, func() {
-				if !running || !a.speaking {
-					step()
-					return
-				}
-				a.mouthSig.Set("talk-o")
-				a.poseSig.Set("talk-o")
-				a.extraSig.Set("speech-o")
-				a.browsSig.Set("talk-o")
-				a.eyesSig.Set("talk-o")
-				timer = time.AfterFunc(150, func() {
-					if !running || !a.speaking {
-						step()
-						return
-					}
-					a.mouthSig.Set("normal")
-					a.poseSig.Set("none")
-					a.extraSig.Set("none")
-					a.browsSig.Set("normal")
-					a.eyesSig.Set("normal")
-					timer = time.AfterFunc(120, step)
-				})
-			})
-			return
-		}
-
-		switch a.state {
-		case Normal:
-			a.browsSig.Set("normal")
-			a.eyesSig.Set("normal")
-			a.noseSig.Set("none")
-			a.mouthSig.Set("normal")
-			a.poseSig.Set("none")
-			a.extraSig.Set("none")
-			sleepTime := 3500 + rand.Intn(1500)
-			timer = time.AfterFunc(sleepTime, func() {
-				if !running || a.state != Normal || a.speaking {
-					step()
-					return
-				}
-				a.eyesSig.Set("closed")
-				timer = time.AfterFunc(150, step)
-			})
-
-		case Greeting:
-			a.browsSig.Set("greeting")
-			a.eyesSig.Set("greeting")
-			a.noseSig.Set("none")
-			a.mouthSig.Set("greeting")
-			a.poseSig.Set("greeting")
-			a.extraSig.Set("wave")
-			timer = time.AfterFunc(500, step)
-
-		case Think:
-			a.browsSig.Set("think")
-			a.eyesSig.Set("think")
-			a.noseSig.Set("sad")
-			a.mouthSig.Set("think")
-			a.poseSig.Set("think")
-			a.extraSig.Set("thought")
-			timer = time.AfterFunc(500, step)
-
-		case Listen:
-			a.browsSig.Set("listen")
-			a.eyesSig.Set("listen")
-			a.noseSig.Set("none")
-			a.mouthSig.Set("listen")
-			a.poseSig.Set("none")
-			a.extraSig.Set("sound")
-			timer = time.AfterFunc(500, step)
-
-		case Fatigue:
-			a.browsSig.Set("fatigue")
-			a.eyesSig.Set("fatigue")
-			a.noseSig.Set("none")
-			a.mouthSig.Set("fatigue")
-			a.poseSig.Set("none")
-			a.extraSig.Set("zzz")
-			sleepTime := 10000 + rand.Intn(20000)
-			timer = time.AfterFunc(sleepTime, func() {
-				if !running || a.state != Fatigue || a.speaking {
-					step()
-					return
-				}
-				// Deep yawn sequence (~5.5s)
-				a.mouthSig.Set("talk-a")
-				timer = time.AfterFunc(1500, func() {
-					if !running || a.state != Fatigue || a.speaking {
-						step()
-						return
-					}
-					a.mouthSig.Set("astonishment")
-					a.eyesSig.Set("closed")
-					timer = time.AfterFunc(2000, func() {
-						if !running || a.state != Fatigue || a.speaking {
-							step()
-							return
-						}
-						a.mouthSig.Set("talk-o")
-						timer = time.AfterFunc(2000, func() {
-							if !running || a.state != Fatigue || a.speaking {
-								step()
-								return
-							}
-							a.mouthSig.Set("fatigue")
-							a.eyesSig.Set("fatigue")
-							step()
-						})
-					})
-				})
-			})
-
-		case Sad:
-			a.browsSig.Set("sad")
-			a.eyesSig.Set("sad")
-			a.noseSig.Set("sad")
-			a.mouthSig.Set("sad")
-			a.poseSig.Set("none")
-			a.extraSig.Set("drop")
-			timer = time.AfterFunc(500, step)
-
-		case Astonishment:
-			a.browsSig.Set("astonishment")
-			a.eyesSig.Set("astonishment")
-			a.noseSig.Set("none")
-			a.mouthSig.Set("astonishment")
-			a.poseSig.Set("none")
-			a.extraSig.Set("marks")
-			timer = time.AfterFunc(500, step)
-
-		case Anger:
-			a.browsSig.Set("anger")
-			a.eyesSig.Set("anger")
-			a.noseSig.Set("none")
-			a.mouthSig.Set("anger")
-			a.poseSig.Set("none")
-			a.extraSig.Set("none")
-			timer = time.AfterFunc(500, step)
-
-		default:
-			timer = time.AfterFunc(500, step)
-		}
+	runesCount := 0
+	for range text {
+		runesCount++
+	}
+	millis := runesCount * 60
+	if millis < 1200 {
+		millis = 1200
 	}
 
-	step()
+	a.timer = time.AfterFunc(millis, func() {
+		if a.activity == Speak {
+			a.Stop()
+		}
+	})
+}
+
+func (a *Avatar) yawn() {
+	if a.activity != Fatigue {
+		return
+	}
+
+	// Yawn sequence
+	// step 1: mouth talk-o
+	a.yawnStep = 1
+	a.apply()
+
+	a.timer = time.AfterFunc(1500, func() {
+		if a.activity != Fatigue {
+			return
+		}
+		// step 2: mouth astonishment + eyes closed + nose closed
+		a.yawnStep = 2
+		a.apply()
+
+		a.timer = time.AfterFunc(2000, func() {
+			if a.activity != Fatigue {
+				return
+			}
+			// step 3: mouth talk-o
+			a.yawnStep = 3
+			a.apply()
+
+			a.timer = time.AfterFunc(2000, func() {
+				if a.activity != Fatigue {
+					return
+				}
+				// step 0: back to normal fatigue
+				a.yawnStep = 0
+				a.apply()
+				a.scheduleYawn()
+			})
+		})
+	})
+}
+
+func (a *Avatar) scheduleYawn() {
+	a.timer = time.AfterFunc(10000+rand.Intn(20001), a.yawn)
+}
+
+func (a *Avatar) apply() {
+	if a.catalog.prefix == "" {
+		return
+	}
+
+	act := a.activity
+	emo := a.emotion
+
+	// If transitioning to Fatigue, we need to schedule the yawn
+	if act == Fatigue && a.timer == nil {
+		a.scheduleYawn()
+	}
+
+	emoVariant := variantNormal
+	switch emo {
+	case Happy:
+		emoVariant = variantGreeting
+	case Sad:
+		emoVariant = variantSad
+	case Astonished:
+		emoVariant = variantAstonishment
+	case Angry:
+		emoVariant = variantAnger
+	}
+
+	actVariant := variantNormal
+	switch act {
+	case Greeting:
+		actVariant = variantGreeting
+	case Listen:
+		actVariant = variantListen
+	case Think:
+		actVariant = variantThink
+	case Speak:
+		actVariant = variantNormal
+	case Fatigue:
+		actVariant = variantFatigue
+	}
+
+	// brows, eyes
+	beVariant := emoVariant
+	if emo == Neutral {
+		beVariant = actVariant
+	}
+	if a.yawnStep == 2 {
+		beVariant = variantClosed
+	}
+	a.browsSig.Set(a.catalog.face[0][beVariant])
+	a.eyesSig.Set(a.catalog.face[1][beVariant])
+
+	// mouth (static)
+	mouthVariant := emoVariant
+	switch act {
+	case Greeting, Listen, Think, Fatigue:
+		mouthVariant = actVariant
+	}
+	if a.yawnStep == 1 || a.yawnStep == 3 {
+		mouthVariant = variantTalkO
+	} else if a.yawnStep == 2 {
+		mouthVariant = variantAstonishment
+	}
+
+	a.mouthSig.Set(a.catalog.face[2][mouthVariant])
+
+	// speech frames
+	a.mouthRestSig.Set(a.catalog.face[2][emoVariant]) // rest frame = emotion's mouth
+
+	// nose
+	if emo == Sad {
+		a.noseSig.Set("#" + a.catalog.prefix + "-nose-sad")
+	} else if a.yawnStep == 2 {
+		a.noseSig.Set("#" + a.catalog.prefix + "-nose-closed")
+	} else {
+		a.noseSig.Set("")
+	}
+
+	// extras static
+	if act == Idle {
+		if emo == Sad {
+			a.extraSig.Set("#" + a.catalog.prefix + "-extras-drop")
+		} else if emo == Astonished {
+			a.extraSig.Set("#" + a.catalog.prefix + "-extras-marks")
+		} else {
+			a.extraSig.Set("")
+		}
+	} else {
+		a.extraSig.Set("")
+	}
+
+	// groups display based on activity
+	a.speakSig.Set(displayHidden)
+	a.mouthStaticSig.Set(displayShown)
+	a.greetSig.Set(displayHidden)
+	a.thinkSig.Set(displayHidden)
+	a.extraStaticSig.Set(displayHidden)
+	a.fatigueSig.Set(displayHidden)
+	a.listenSig.Set(displayHidden)
+
+	switch act {
+	case Speak:
+		a.speakSig.Set(displayShown)
+		a.mouthStaticSig.Set(displayHidden)
+	case Greeting:
+		a.greetSig.Set(displayShown)
+	case Think:
+		a.thinkSig.Set(displayShown)
+	case Fatigue:
+		a.fatigueSig.Set(displayShown)
+	case Listen:
+		a.listenSig.Set(displayShown)
+	case Idle:
+		if emo == Sad || emo == Astonished {
+			a.extraStaticSig.Set(displayShown)
+		}
+	}
 }
