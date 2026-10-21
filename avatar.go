@@ -119,7 +119,6 @@ func (a *Avatar) WidgetKind() widget.Kind {
 }
 
 func (a *Avatar) Render() *dom.Element {
-	prefix := a.catalog.prefix
 
 	renderLayer := func(l Layer, hrefFunc func() string, id string) *dom.Element {
 		use := dom.NewElement("use").BindAttrFunc("href", hrefFunc)
@@ -162,8 +161,8 @@ func (a *Avatar) Render() *dom.Element {
 						dom.NewElement("use").BindAttrFunc("href", func() string { return a.mouthSig.Get() }),
 					),
 					dom.NewElement("g").BindAttr("display", a.speakSig).Child(
-						dom.NewElement("use").Class(NameAvatar.Class(PartMouthA).String()).Attr("href", "#"+prefix+"-mouth-talk-a"),
-						dom.NewElement("use").Class(NameAvatar.Class(PartMouthO).String()).Attr("href", "#"+prefix+"-mouth-talk-o"),
+						dom.NewElement("use").Class(NameAvatar.Class(PartMouthA).String()).Attr("href", a.catalog.mouthTalkA),
+						dom.NewElement("use").Class(NameAvatar.Class(PartMouthO).String()).Attr("href", a.catalog.mouthTalkO),
 						dom.NewElement("use").Class(NameAvatar.Class(PartMouthRest).String()).BindAttrFunc("href", func() string { return a.mouthRestSig.Get() }),
 					),
 				),
@@ -171,14 +170,14 @@ func (a *Avatar) Render() *dom.Element {
 
 			dom.NewElement("g").BindAttr("display", a.layerSig[LayerPoses]).Child(
 				dom.NewElement("g").Class(NameAvatar.Class(PartGreetHand).String()).BindAttr("display", a.greetSig).Child(
-					dom.NewElement("use").Attr("href", "#"+prefix+"-pose-greeting"),
+					dom.NewElement("use").Attr("href", a.catalog.poseGreeting),
 				),
 				dom.NewElement("g").BindAttr("display", a.thinkSig).Child(
-					dom.NewElement("use").Attr("href", "#"+prefix+"-pose-think"),
+					dom.NewElement("use").Attr("href", a.catalog.poseThink),
 				),
 				dom.NewElement("g").Class(NameAvatar.Class(PartTalkHands).String()).BindAttr("display", a.speakSig).Child(
-					dom.NewElement("use").Class(NameAvatar.Class(PartHandA).String()).Attr("href", "#"+prefix+"-pose-talk-a"),
-					dom.NewElement("use").Class(NameAvatar.Class(PartHandO).String()).Attr("href", "#"+prefix+"-pose-talk-o"),
+					dom.NewElement("use").Class(NameAvatar.Class(PartHandA).String()).Attr("href", a.catalog.poseTalkA),
+					dom.NewElement("use").Class(NameAvatar.Class(PartHandO).String()).Attr("href", a.catalog.poseTalkO),
 				),
 			),
 
@@ -187,27 +186,27 @@ func (a *Avatar) Render() *dom.Element {
 					dom.NewElement("use").BindAttrFunc("href", func() string { return a.extraSig.Get() }),
 				),
 				dom.NewElement("g").BindAttr("display", a.speakSig).Child(
-					dom.NewElement("use").Class(NameAvatar.Class(PartSpeechA).String()).Attr("href", "#"+prefix+"-extras-speech-a"),
-					dom.NewElement("use").Class(NameAvatar.Class(PartSpeechO).String()).Attr("href", "#"+prefix+"-extras-speech-o"),
+					dom.NewElement("use").Class(NameAvatar.Class(PartSpeechA).String()).Attr("href", a.catalog.speechA),
+					dom.NewElement("use").Class(NameAvatar.Class(PartSpeechO).String()).Attr("href", a.catalog.speechO),
 				),
 				dom.NewElement("g").BindAttr("display", a.thinkSig).Child(
-					dom.NewElement("use").Attr("href", "#"+prefix+"-thought-bubble-1"),
-					dom.NewElement("use").Attr("href", "#"+prefix+"-thought-bubble-2"),
-					dom.NewElement("use").Attr("href", "#"+prefix+"-thought-bubble-3"),
-					dom.NewElement("use").Attr("href", "#"+prefix+"-thought-bubble-3-ring"),
-					dom.NewElement("use").Class(NameAvatar.Class(PartDot1).String()).Attr("href", "#"+prefix+"-thought-dot-1"),
-					dom.NewElement("use").Class(NameAvatar.Class(PartDot2).String()).Attr("href", "#"+prefix+"-thought-dot-2"),
-					dom.NewElement("use").Class(NameAvatar.Class(PartDot3).String()).Attr("href", "#"+prefix+"-thought-dot-3"),
+					dom.NewElement("use").Attr("href", a.catalog.bubble1),
+					dom.NewElement("use").Attr("href", a.catalog.bubble2),
+					dom.NewElement("use").Attr("href", a.catalog.bubble3),
+					dom.NewElement("use").Attr("href", a.catalog.bubble3Ring),
+					dom.NewElement("use").Class(NameAvatar.Class(PartDot1).String()).Attr("href", a.catalog.dot1),
+					dom.NewElement("use").Class(NameAvatar.Class(PartDot2).String()).Attr("href", a.catalog.dot2),
+					dom.NewElement("use").Class(NameAvatar.Class(PartDot3).String()).Attr("href", a.catalog.dot3),
 				),
 				dom.NewElement("g").BindAttr("display", a.listenSig).Child(
-					dom.NewElement("use").Class(NameAvatar.Class(PartSound1).String()).Attr("href", "#"+prefix+"-sound-inner"),
-					dom.NewElement("use").Class(NameAvatar.Class(PartSound2).String()).Attr("href", "#"+prefix+"-sound-mid"),
-					dom.NewElement("use").Class(NameAvatar.Class(PartSound3).String()).Attr("href", "#"+prefix+"-sound-outer"),
+					dom.NewElement("use").Class(NameAvatar.Class(PartSound1).String()).Attr("href", a.catalog.soundInner),
+					dom.NewElement("use").Class(NameAvatar.Class(PartSound2).String()).Attr("href", a.catalog.soundMid),
+					dom.NewElement("use").Class(NameAvatar.Class(PartSound3).String()).Attr("href", a.catalog.soundOuter),
 				),
 				dom.NewElement("g").BindAttr("display", a.fatigueSig).Child(
-					dom.NewElement("use").Class(NameAvatar.Class(PartZzz1).String()).Attr("href", "#"+prefix+"-zzz-1"),
-					dom.NewElement("use").Class(NameAvatar.Class(PartZzz2).String()).Attr("href", "#"+prefix+"-zzz-2"),
-					dom.NewElement("use").Class(NameAvatar.Class(PartZzz3).String()).Attr("href", "#"+prefix+"-zzz-3"),
+					dom.NewElement("use").Class(NameAvatar.Class(PartZzz1).String()).Attr("href", a.catalog.zzz1),
+					dom.NewElement("use").Class(NameAvatar.Class(PartZzz2).String()).Attr("href", a.catalog.zzz2),
+					dom.NewElement("use").Class(NameAvatar.Class(PartZzz3).String()).Attr("href", a.catalog.zzz3),
 				),
 			),
 		)

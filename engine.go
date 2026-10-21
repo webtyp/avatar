@@ -136,9 +136,9 @@ func (a *Avatar) apply() {
 
 	// nose
 	if emo == Sad {
-		a.noseSig.Set("#" + a.catalog.prefix + "-nose-sad")
+		a.noseSig.Set(a.catalog.noseSad)
 	} else if a.yawnStep == 2 {
-		a.noseSig.Set("#" + a.catalog.prefix + "-nose-closed")
+		a.noseSig.Set(a.catalog.noseClosed)
 	} else {
 		a.noseSig.Set("")
 	}
@@ -146,9 +146,9 @@ func (a *Avatar) apply() {
 	// extras static
 	if act == Idle {
 		if emo == Sad {
-			a.extraSig.Set("#" + a.catalog.prefix + "-extras-drop")
+			a.extraSig.Set(a.catalog.extrasDrop)
 		} else if emo == Astonished {
-			a.extraSig.Set("#" + a.catalog.prefix + "-extras-marks")
+			a.extraSig.Set(a.catalog.extrasMarks)
 		} else {
 			a.extraSig.Set("")
 		}

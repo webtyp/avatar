@@ -42,7 +42,7 @@ func TestAvatar_WorkedExamples(t *testing.T) {
 		contains []string
 	}{
 		{
-			name: "New(NewCatalog(t))",
+			name:  "New(NewCatalog(t))",
 			calls: func(av *avatar.Avatar) {},
 			contains: []string{
 				`href='#t-brows-normal'`,
@@ -72,7 +72,7 @@ func TestAvatar_WorkedExamples(t *testing.T) {
 			contains: []string{
 				`#t-brows-anger`,
 				`display='inline'`, // speech group display (dom.String uses single quotes)
-				`#t-mouth-anger`, // rest frame
+				`#t-mouth-anger`,   // rest frame
 			},
 		},
 		{

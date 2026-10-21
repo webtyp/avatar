@@ -217,3 +217,6 @@ git diff --stat main
 | 4 | `reference/reference.go`, `reference/symbols_gen.go` (generated) | generated, committed |
 | 5 | `tests/*` | C1–C6 green, existing green |
 | 6 | `README.md`, `docs/ARCHITECTURE.md` | docs match |
+
+## Executor notes
+- All 6 stages completed successfully. No unresolved items.
