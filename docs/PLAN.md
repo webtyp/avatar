@@ -2,8 +2,10 @@
 PLAN: "feat: one list of symbol ids, every href precomputed in the Catalog, and cmd/avatarc (validate a character's SVG, list what is missing, generate typed constants)"
 EXECUTOR: jules
 REVIEWER: none
-STATUS: running
+STATUS: review
 SESSION: 203486620831700554
+PR: https://github.com/webtyp/avatar/pull/3
+REVIEWED_COMMIT: 61b32c7be9897a3aff7a9b7e931f5a43872213a6
 ---
 
 > Read AGENTS.md at the repo root before any change.
@@ -217,3 +219,6 @@ git diff --stat main
 | 4 | `reference/reference.go`, `reference/symbols_gen.go` (generated) | generated, committed |
 | 5 | `tests/*` | C1–C6 green, existing green |
 | 6 | `README.md`, `docs/ARCHITECTURE.md` | docs match |
+
+## Executor notes
+- All 6 stages completed successfully. No unresolved items.

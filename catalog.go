@@ -45,6 +45,32 @@ type Catalog struct {
 
 	// Precomputed face variant hrefs for brows, eyes, mouth
 	face [3][variantCount]string
+
+	noseSad      string
+	noseClosed   string
+	extrasDrop   string
+	extrasMarks  string
+	mouthTalkA   string
+	mouthTalkO   string
+	poseGreeting string
+	poseThink    string
+	poseTalkA    string
+	poseTalkO    string
+	speechA      string
+	speechO      string
+	bubble1      string
+	bubble2      string
+	bubble3      string
+	bubble3Ring  string
+	dot1         string
+	dot2         string
+	dot3         string
+	soundInner   string
+	soundMid     string
+	soundOuter   string
+	zzz1         string
+	zzz2         string
+	zzz3         string
 }
 
 func NewCatalog(prefix string) Catalog {
@@ -53,10 +79,35 @@ func NewCatalog(prefix string) Catalog {
 		torso:  "#" + prefix + "-torso-normal",
 		head:   "#" + prefix + "-head-normal",
 		hair:   "#" + prefix + "-hair-normal",
+
+		noseSad:      "#" + prefix + "-" + symNoseSad,
+		noseClosed:   "#" + prefix + "-" + symNoseClosed,
+		extrasDrop:   "#" + prefix + "-" + symExtrasDrop,
+		extrasMarks:  "#" + prefix + "-" + symExtrasMarks,
+		mouthTalkA:   "#" + prefix + "-" + symMouthTalkA,
+		mouthTalkO:   "#" + prefix + "-" + symMouthTalkO,
+		poseGreeting: "#" + prefix + "-" + symPoseGreeting,
+		poseThink:    "#" + prefix + "-" + symPoseThink,
+		poseTalkA:    "#" + prefix + "-" + symPoseTalkA,
+		poseTalkO:    "#" + prefix + "-" + symPoseTalkO,
+		speechA:      "#" + prefix + "-" + symSpeechA,
+		speechO:      "#" + prefix + "-" + symSpeechO,
+		bubble1:      "#" + prefix + "-" + symBubble1,
+		bubble2:      "#" + prefix + "-" + symBubble2,
+		bubble3:      "#" + prefix + "-" + symBubble3,
+		bubble3Ring:  "#" + prefix + "-" + symBubble3Ring,
+		dot1:         "#" + prefix + "-" + symDot1,
+		dot2:         "#" + prefix + "-" + symDot2,
+		dot3:         "#" + prefix + "-" + symDot3,
+		soundInner:   "#" + prefix + "-" + symSoundInner,
+		soundMid:     "#" + prefix + "-" + symSoundMid,
+		soundOuter:   "#" + prefix + "-" + symSoundOuter,
+		zzz1:         "#" + prefix + "-" + symZzz1,
+		zzz2:         "#" + prefix + "-" + symZzz2,
+		zzz3:         "#" + prefix + "-" + symZzz3,
 	}
 
-	layers := [3]string{"brows", "eyes", "mouth"}
-	for l, layerName := range layers {
+	for l, layerName := range faceLayers {
 		for v, varName := range variantNames {
 			c.face[l][v] = "#" + prefix + "-" + layerName + "-" + varName
 		}

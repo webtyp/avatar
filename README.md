@@ -40,6 +40,11 @@ Examples of layer variants applied:
 - `SetEmotion(Angry); SetActivity(Speak)` -> `#t-brows-anger`, `#t-mouth-anger` + speech loop
 - `SetActivity(Think)` -> `#t-brows-think`, `#t-mouth-think`, think loop
 
+
+## New character
+
+To add a new character, draw layers with these names (see [RequiredSymbols](ids.go)), run `avatarc`, read the missing list, and use the generated constants with `WithHair(reference.HairShort)`.
+
 ## Reference character
 
 The reference character Cote lives in the `reference` subpackage.

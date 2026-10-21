@@ -12,6 +12,10 @@ repository (activity/emotion/autonomous channels, CSS-driven loops, `cmd/avatarc
 | Each variant becomes its own `<symbol id="<prefix>-<layer>-<variant>">` through `(*sprite.Sprite).AddLayers` (`webtyp/svg` v0.3.28) | `<use>` content is a closed shadow tree: CSS cannot show or hide nodes inside one symbol |
 | Geometry only in `!wasm` (`svg.go`, `IconSvg()`); WASM carries only symbol ids | `sitec` inlines the sprite in `<body>`; the 115 KB of paths never reach the binary |
 
+
+### Symbol ids
+There is one list of symbol ids (`ids.go`), hrefs are precomputed in `Catalog` (D13), and validated via `avatarc` (D14).
+
 ## Prior art
 
 | Product | What it separates | What we take |
